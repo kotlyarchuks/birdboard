@@ -12,5 +12,14 @@ class ProjectsController extends Controller
             'title' => $request->title,
             'description' => $request->description
         ]);
+
+        return redirect('projects');
+    }
+
+    public function index()
+    {
+        $projects = Project::all();
+
+        return view('projects.index', compact('projects'));
     }
 }
