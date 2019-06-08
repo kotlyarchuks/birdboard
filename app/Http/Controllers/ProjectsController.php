@@ -8,10 +8,12 @@ use Illuminate\Http\Request;
 class ProjectsController extends Controller
 {
     public function store(Request $request){
-        Project::create([
-            'title' => $request->title,
-            'description' => $request->description
+        $attributes = request()->validate([
+            'title' => 'required',
+            'description' => 'required'
         ]);
+
+        Project::create($attributes);
 
         return redirect('projects');
     }
