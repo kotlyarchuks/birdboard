@@ -37,6 +37,12 @@ class ProjectsTest extends TestCase {
     }
 
     /** @test * */
+    function guests_cannot_visit_create_project_page()
+    {
+        $this->get('/projects/create')->assertRedirect('login');
+    }
+
+    /** @test * */
     function user_can_create_project()
     {
         $this->signIn();

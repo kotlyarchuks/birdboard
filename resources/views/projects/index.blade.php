@@ -19,5 +19,7 @@
                 <p>No projects yet!</p>
             @endforelse
     </ul>
+    <br>
+    <a href="/projects/create">Create new project</a>
 </body>
 </html>
