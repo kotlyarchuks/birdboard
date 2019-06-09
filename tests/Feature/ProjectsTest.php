@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -12,9 +13,17 @@ class ProjectsTest extends TestCase {
     use WithFaker, RefreshDatabase;
 
     /** @test * */
+    function should_be_authenticated_to_create_project()
+    {
+        $attributes = factory('App\Project')->raw();
+        //Act
+        $this->post('/projects', $attributes)->assertRedirect('login');
+    }
+
+    /** @test * */
     function user_can_create_project()
     {
-        $this->withoutExceptionHandling();
+        $this->signIn();
 
         $attributes = [
             'title'       => $this->faker->sentence,
@@ -31,6 +40,7 @@ class ProjectsTest extends TestCase {
     /** @test * */
     function user_can_view_project_page()
     {
+        $this->signIn();
         $project = factory('App\Project')->create();
 
         $path = $project->path();
@@ -43,6 +53,7 @@ class ProjectsTest extends TestCase {
     /** @test * */
     function project_requires_a_title()
     {
+        $this->signIn();
         $attributes = factory('App\Project')->raw(['title' => '']);
 
         $this->post('/projects', $attributes)->assertSessionHasErrors('title');
@@ -51,8 +62,14 @@ class ProjectsTest extends TestCase {
     /** @test * */
     function project_requires_a_description()
     {
+        $this->signIn();
         $attributes = factory('App\Project')->raw(['description' => '']);
 
         $this->post('/projects', $attributes)->assertSessionHasErrors('description');
+    }
+
+    public function signIn()
+    {
+        $this->actingAs(factory('App\User')->create());
     }
 }
