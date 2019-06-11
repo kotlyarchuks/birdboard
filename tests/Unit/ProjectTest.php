@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Task;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
@@ -26,5 +27,13 @@ class ProjectTest extends TestCase
         $project = factory('App\Project')->create();
 
         $this->assertInstanceOf(User::class, $project->owner);
+    }
+
+    /** @test * */
+    function project_has_tasks()
+    {
+        $project = factory('App\Project')->create();
+        factory('App\Task')->create(['project_id' => $project->id]);
+        $this->assertInstanceOf(Task::class, $project->tasks->first());
     }
 }
