@@ -12,9 +12,11 @@
             <div class="w-3/4 mr-4">
                 <div class="mb-8">
                     <h3 class="text-gray-700 text-lg mb-6">Tasks</h3>
-                    <div class="card mb-3">First task</div>
-                    <div class="card mb-3">Second task</div>
-                    <div class="card mb-3">Third task</div>
+                    @forelse($project->tasks as $task)
+                    <div class="card mb-3">{{$task->text}}</div>
+                    @empty
+                        <div class="card mb-3">No tasks yet</div>
+                    @endforelse
                 </div>
                 <div>
                     <h3 class="text-gray-700 text-lg mb-6">General notes</h3>
