@@ -11,10 +11,20 @@ class TasksTest extends TestCase
     use RefreshDatabase;
 
     /** @test * */
+    function project_can_have_tasks()
+    {
+        $this->signIn();
+        $project = factory('App\Project')->create(['owner_id' => auth()->user()->id]);
+
+        $this->post($project->path() . '/tasks', ['text' => 'My new task']);
+        $this->assertEquals('My new task', $project->tasks->first()->text);
+    }
+
+    /** @test * */
     function user_can_see_tasks_on_project_page()
     {
         $this->signIn();
-        $project = factory('App\Project')->create();
+        $project = factory('App\Project')->create(['owner_id' => auth()->user()->id]);
         $project->tasks()->createMany([
             $this->createTask($raw = true),
             $this->createTask($raw = true)
@@ -25,9 +35,13 @@ class TasksTest extends TestCase
             ->assertSee($project->tasks->get(1)->text);
     }
 
-    public function signIn()
+    /** @test * */
+    function task_requires_a_text()
     {
-        $this->actingAs(factory('App\User')->create());
+        $this->signIn();
+        $project = factory('App\Project')->create(['owner_id' => auth()->user()->id]);
+
+        $this->post($project->path() . '/tasks/', [])->assertSessionHasErrors('text');
     }
 
     public function createTask($raw = false)

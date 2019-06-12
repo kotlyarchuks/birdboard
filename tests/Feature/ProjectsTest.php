@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -62,13 +63,12 @@ class ProjectsTest extends TestCase {
     /** @test * */
     function user_can_view_own_project_page()
     {
-        $user = factory('App\User')->create();
-        $this->actingAs($user);
-        $project = factory('App\Project')->create(['owner_id' => $user->id]);
+        $this->signIn();
+        $project = factory('App\Project')->create(['owner_id' => auth()->user()->id]);
 
         $this->get($project->path())
             ->assertSee($project->title)
-            ->assertSee($project->description);
+            ->assertSee(Str::limit($project->description, 100));
     }
 
     /** @test * */
@@ -98,10 +98,5 @@ class ProjectsTest extends TestCase {
         $attributes = factory('App\Project')->raw(['description' => '']);
 
         $this->post('/projects', $attributes)->assertSessionHasErrors('description');
-    }
-
-    public function signIn()
-    {
-        $this->actingAs(factory('App\User')->create());
     }
 }

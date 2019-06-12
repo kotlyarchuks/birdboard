@@ -36,4 +36,12 @@ class ProjectTest extends TestCase
         factory('App\Task')->create(['project_id' => $project->id]);
         $this->assertInstanceOf(Task::class, $project->tasks->first());
     }
+
+    /** @test * */
+    function project_can_add_task()
+    {
+        $project = factory('App\Project')->create();
+        $project->addTask('My new task');
+        $this->assertEquals('My new task', $project->tasks()->first()->text);
+    }
 }

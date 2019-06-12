@@ -30,4 +30,9 @@ class Project extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+    public function addTask($text)
+    {
+        return $this->tasks()->create(['text' => $text]);
+    }
 }
