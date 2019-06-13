@@ -54,6 +54,32 @@ class TasksTest extends TestCase
         $this->post($project->path() . '/tasks/', [])->assertSessionHasErrors('text');
     }
 
+    /** @test * */
+    function task_can_be_updated()
+    {
+        $this->signIn();
+        $project = factory('App\Project')->create(['owner_id' => auth()->user()->id]);
+        $task = $project->tasks()->create(['text' => 'Old task']);
+
+        $this->patch($task->path(), [
+            'text' => 'New task',
+            'completed' => true
+        ]);
+        $this->assertEquals('New task', $project->tasks()->first()->text);
+        $this->assertEquals(true, $project->tasks()->first()->completed);
+    }
+
+    /** @test * */
+    function you_cannot_update_task_on_project_you_do_not_own()
+    {
+        $this->signIn();
+
+        $project = factory('App\Project')->create();
+        $task = $project->addTask('New task');
+        $this->patch($task->path(), ['text' => 'Edited task'])
+            ->assertStatus(403);
+    }
+
     public function createTask($raw = false)
     {
         return $raw ? factory('App\Task')->raw() : factory('App\Task')->create();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Project;
+use App\Task;
 use Illuminate\Http\Request;
 
 class TasksController extends Controller
@@ -13,10 +14,24 @@ class TasksController extends Controller
             abort(403);
         }
 
-        $attributes = request()->validate([
-            'text' => 'required'
+        request()->validate(['text' => 'required']);
+        $project->addTask(request('text'));
+
+        return redirect($project->path());
+    }
+
+    public function update(Project $project, Task $task)
+    {
+        if (auth()->user()->isNot($project->owner)) {
+            abort(403);
+        }
+
+        request()->validate(['text' => 'required']);
+
+        $task->update([
+            'text' => request('text'),
+            'completed' => request()->has('completed')
         ]);
-        $project->addTask($attributes['text']);
 
         return redirect($project->path());
     }
