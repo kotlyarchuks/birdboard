@@ -36,6 +36,16 @@ class TasksTest extends TestCase
     }
 
     /** @test * */
+    function you_cannot_add_tasks_to_project_you_dont_own()
+    {
+        $this->signIn();
+
+        $project = factory('App\Project')->create();
+        $this->post($project->path() . '/tasks', ['text' => 'My new task'])
+                ->assertStatus(403);
+    }
+
+    /** @test * */
     function task_requires_a_text()
     {
         $this->signIn();
