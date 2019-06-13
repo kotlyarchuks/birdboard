@@ -36,7 +36,7 @@ class TasksTest extends TestCase
     }
 
     /** @test * */
-    function you_cannot_add_tasks_to_project_you_dont_own()
+    function you_cannot_add_tasks_to_project_you_do_not_own()
     {
         $this->signIn();
 
