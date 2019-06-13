@@ -20,9 +20,4 @@ class TasksController extends Controller
 
         return redirect($project->path());
     }
-
-    public function create(Project $project)
-    {
-        return view('tasks.create', compact('project'));
-    }
 }
