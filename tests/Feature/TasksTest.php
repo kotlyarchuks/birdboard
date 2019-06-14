@@ -80,6 +80,19 @@ class TasksTest extends TestCase
             ->assertStatus(403);
     }
 
+    /** @test * */
+    function updating_task_updates_project()
+    {
+        $this->signIn();
+
+        $project1 = factory('App\Project')->create(['owner_id' => auth()->user()->id]);
+        $project2 = factory('App\Project')->create(['owner_id' => auth()->user()->id]);
+
+        $project1->addTask('New task');
+
+        $this->get('/projects')->assertSeeInOrder([$project1->title, $project2->title]);
+    }
+
     public function createTask($raw = false)
     {
         return $raw ? factory('App\Task')->raw() : factory('App\Task')->create();

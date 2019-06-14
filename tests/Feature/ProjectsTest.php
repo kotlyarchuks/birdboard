@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Project;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Str;
@@ -98,5 +99,16 @@ class ProjectsTest extends TestCase {
         $attributes = factory('App\Project')->raw(['description' => '']);
 
         $this->post('/projects', $attributes)->assertSessionHasErrors('description');
+    }
+
+    /** @test * */
+    function most_recent_projects_are_shown_first()
+    {
+        $this->signIn();
+
+        $project1 = factory('App\Project')->create(['owner_id' => auth()->user()->id]);
+        $project2 = factory('App\Project')->create(['owner_id' => auth()->user()->id, 'title' => 'Latest title']);
+        $project1->update(['title' => 'Updated title']);
+        $this->get('/projects')->assertSeeInOrder(['Updated title', 'Latest title']);
     }
 }
