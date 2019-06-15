@@ -47,7 +47,6 @@ class ProjectsTest extends TestCase {
     /** @test * */
     function user_can_create_project()
     {
-        $this->withoutExceptionHandling();
         $this->signIn();
 
         $attributes = [
@@ -64,6 +63,17 @@ class ProjectsTest extends TestCase {
             ->assertSee($attributes['title'])
             ->assertSee(Str::limit($attributes['description'], 100))
             ->assertSee($attributes['notes']);
+    }
+
+    /** @test * */
+    function user_can_update_project()
+    {
+        $this->withoutExceptionHandling();
+        $this->signIn();
+        $project = factory('App\Project')->create(['owner_id' => auth()->user()->id]);
+
+        $this->patch($project->path(), ['notes' => 'Updated notes']);
+        $this->get($project->path())->assertSee('Updated notes');
     }
 
     /** @test * */

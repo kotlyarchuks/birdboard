@@ -33,7 +33,12 @@
                 </div>
                 <div>
                     <h3 class="text-gray-700 text-lg mb-6">General notes</h3>
-                    <textarea class="card w-full" style="min-height: 200px">{{$project->notes}}</textarea>
+                    <form action="{{$project->path()}}" method="POST">
+                        @method('PATCH')
+                        @csrf
+                        <textarea class="card w-full mb-4" style="min-height: 200px" placeholder="Your thoughts..." name="notes">{{$project->notes}}</textarea>
+                        <button type="submit" class="button">Save</button>
+                    </form>
                 </div>
             </div>
             <div class="w-1/4">
