@@ -10,7 +10,8 @@ class ProjectsController extends Controller
     public function store(Request $request){
         $attributes = request()->validate([
             'title' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'notes' => ''
         ]);
 
         $project = auth()->user()->projects()->create($attributes);

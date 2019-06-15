@@ -33,7 +33,7 @@
                 </div>
                 <div>
                     <h3 class="text-gray-700 text-lg mb-6">General notes</h3>
-                    <textarea class="card w-full" style="min-height: 200px"></textarea>
+                    <textarea class="card w-full" style="min-height: 200px">{{$project->notes}}</textarea>
                 </div>
             </div>
             <div class="w-1/4">
