@@ -74,7 +74,18 @@ class ProjectsTest extends TestCase {
         $this->actingAs($project->owner)
             ->patch($project->path(), $attributes = [
                 'title' => 'Updated title',
-                'description' => 'Updated description',
+                'description' => 'Updated description'
+            ]);
+        $this->assertDatabaseHas('projects', $attributes);
+    }
+
+    /** @test * */
+    function user_can_update_project_notes()
+    {
+        $project = ProjectFactory::create();
+
+        $this->actingAs($project->owner)
+            ->patch($project->path(), $attributes = [
                 'notes' => 'Updated notes'
             ]);
         $this->assertDatabaseHas('projects', $attributes);

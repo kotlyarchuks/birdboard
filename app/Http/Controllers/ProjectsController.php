@@ -52,9 +52,9 @@ class ProjectsController extends Controller
     public function validateData()
     {
         return request()->validate([
-            'title'       => 'required',
-            'description' => 'required',
-            'notes'       => ''
+            'title'       => 'sometimes|required',
+            'description' => 'sometimes|required',
+            'notes'       => 'nullable'
         ]);
     }
 }
