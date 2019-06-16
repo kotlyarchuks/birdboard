@@ -6,6 +6,7 @@ use App\Project;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Str;
+use Facades\Tests\Setup\ProjectFactory;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -68,21 +69,19 @@ class ProjectsTest extends TestCase {
     /** @test * */
     function user_can_update_project()
     {
-        $this->withoutExceptionHandling();
-        $this->signIn();
-        $project = factory('App\Project')->create(['owner_id' => auth()->user()->id]);
+        $project = ProjectFactory::create();
 
-        $this->patch($project->path(), ['notes' => 'Updated notes']);
-        $this->get($project->path())->assertSee('Updated notes');
+        $this->actingAs($project->owner)->patch($project->path(), ['notes' => 'Updated notes']);
+        $this->actingAs($project->owner)->get($project->path())->assertSee('Updated notes');
     }
 
     /** @test * */
     function user_can_view_own_project_page()
     {
-        $this->signIn();
-        $project = factory('App\Project')->create(['owner_id' => auth()->user()->id]);
+        $project = ProjectFactory::create();
 
-        $this->get($project->path())
+        $this->actingAs($project->owner)
+            ->get($project->path())
             ->assertSee($project->title)
             ->assertSee(Str::limit($project->description, 100));
     }
@@ -122,7 +121,7 @@ class ProjectsTest extends TestCase {
         $this->signIn();
 
         $project1 = factory('App\Project')->create(['owner_id' => auth()->user()->id]);
-        $project2 = factory('App\Project')->create(['owner_id' => auth()->user()->id, 'title' => 'Latest title']);
+        factory('App\Project')->create(['owner_id' => auth()->user()->id, 'title' => 'Latest title']);
         $project1->update(['title' => 'Updated title']);
         $this->get('/projects')->assertSeeInOrder(['Updated title', 'Latest title']);
     }
