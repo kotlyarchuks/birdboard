@@ -71,8 +71,13 @@ class ProjectsTest extends TestCase {
     {
         $project = ProjectFactory::create();
 
-        $this->actingAs($project->owner)->patch($project->path(), ['notes' => 'Updated notes']);
-        $this->actingAs($project->owner)->get($project->path())->assertSee('Updated notes');
+        $this->actingAs($project->owner)
+            ->patch($project->path(), $attributes = [
+                'title' => 'Updated title',
+                'description' => 'Updated description',
+                'notes' => 'Updated notes'
+            ]);
+        $this->assertDatabaseHas('projects', $attributes);
     }
 
     /** @test * */

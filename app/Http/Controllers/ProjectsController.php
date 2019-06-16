@@ -8,11 +8,7 @@ use Illuminate\Http\Request;
 class ProjectsController extends Controller
 {
     public function store(Request $request){
-        $attributes = request()->validate([
-            'title' => 'required',
-            'description' => 'required',
-            'notes' => ''
-        ]);
+        $attributes = $this->validateData();
 
         $project = auth()->user()->projects()->create($attributes);
 
@@ -38,11 +34,27 @@ class ProjectsController extends Controller
         return view('projects.create');
     }
 
+    public function edit(Project $project)
+    {
+        return view('projects.edit', compact('project'));
+    }
+
     public function update(Project $project)
     {
         $this->authorize('update', $project);
 
-        $project->update(['notes' => request('notes')]);
+        $attributes = $this->validateData();
+
+        $project->update($attributes);
         return redirect($project->path());
+    }
+
+    public function validateData()
+    {
+        return request()->validate([
+            'title'       => 'required',
+            'description' => 'required',
+            'notes'       => ''
+        ]);
     }
 }
