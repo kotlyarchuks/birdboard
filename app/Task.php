@@ -18,4 +18,9 @@ class Task extends Model
     {
         return $this->project->path() . '/tasks/' . $this->id;
     }
+
+    public function complete()
+    {
+        $this->completed = true;
+    }
 }
