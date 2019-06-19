@@ -24,10 +24,11 @@ class TasksController extends Controller
 
         request()->validate(['text' => 'required']);
 
-        $task->update([
-            'text' => request('text'),
-            'completed' => request()->has('completed')
-        ]);
+        $task->update(['text' => request('text')]);
+
+        if(request()->has('completed')){
+            $task->complete();
+        }
 
         return redirect($project->path());
     }

@@ -8,6 +8,9 @@ class Task extends Model
 {
     protected $guarded = [];
     protected $touches = ['project'];
+    protected $casts = [
+        'completed' => 'boolean'
+    ];
 
     public function project()
     {
@@ -21,6 +24,6 @@ class Task extends Model
 
     public function complete()
     {
-        $this->completed = true;
+        $this->update(['completed' => true]);
     }
 }

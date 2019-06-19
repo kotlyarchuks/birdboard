@@ -9,7 +9,7 @@ use App\User;
 class ProjectFactory {
 
     protected $user;
-    protected $tasksCount;
+    protected $tasksCount = 0;
 
     public function ownedBy($user)
     {

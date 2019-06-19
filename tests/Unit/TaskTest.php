@@ -32,6 +32,6 @@ class TaskTest extends TestCase
     {
         $task = factory('App\Task')->create();
         $task->complete();
-        $this->assertTrue($task->completed);
+        $this->assertTrue($task->fresh()->completed);
     }
 }
