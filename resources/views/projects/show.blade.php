@@ -42,7 +42,8 @@
                 </div>
             </div>
             <div class="w-1/4">
-                <div class="card">
+                @include('layouts.card')
+                <div class="card mt-3">
                     @foreach($project->activities as $activity)
                         <div>{{$activity->description}} - {{$activity->created_at->diffForHumans()}}</div>
                     @endforeach
