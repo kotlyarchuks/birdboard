@@ -7,12 +7,12 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ActivitiesTest extends TestCase
+class RecordsActivitiesTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test * */
-    function creating_project_records_activity()
+    function creating_project()
     {
         $project = ProjectFactory::create();
         
@@ -21,7 +21,7 @@ class ActivitiesTest extends TestCase
     }
 
     /** @test * */
-    function updating_project_records_activity()
+    function updating_project()
     {
         $project = ProjectFactory::create();
         $project->update(['title' => 'changed']);
@@ -31,7 +31,7 @@ class ActivitiesTest extends TestCase
     }
 
     /** @test * */
-    function creating_task_records_activity()
+    function creating_task()
     {
         $project = ProjectFactory::withTasks(1)->create();
 
@@ -40,11 +40,32 @@ class ActivitiesTest extends TestCase
     }
 
     /** @test * */
-    function completing_task_records_activity_for_project()
+    function completing_task()
     {
         $project = ProjectFactory::withTasks(1)->create();
 
         $project->tasks[0]->complete();
+
+        $this->assertCount(3, $project->activities);
+    }
+
+    /** @test * */
+    function incompleting_task()
+    {
+        $project = ProjectFactory::withTasks(1)->create();
+
+        $project->tasks[0]->complete();
+        $project->tasks[0]->incomplete();
+
+        $this->assertCount(4, $project->activities);
+    }
+
+    /** @test * */
+    function deleting_task()
+    {
+        $project = ProjectFactory::withTasks(1)->create();
+
+        $project->tasks[0]->delete();
 
         $this->assertCount(3, $project->activities);
     }

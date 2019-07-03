@@ -25,8 +25,13 @@ class TaskObserver
      */
     public function updated(Task $task)
     {
-        if (!$task->completed) return;
-        $task->project->recordActivity('task_completed');
+        $activity = "task_updated";
+        if($task->completed) {
+            $activity = "task_completed";
+        } else {
+            $activity = "task_incompleted";
+        }
+        $task->project->recordActivity($activity);
     }
 
     /**
@@ -37,7 +42,7 @@ class TaskObserver
      */
     public function deleted(Task $task)
     {
-        //
+        $task->project->recordActivity("task_deleted");
     }
 
     /**

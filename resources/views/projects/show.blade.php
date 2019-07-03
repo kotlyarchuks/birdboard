@@ -42,7 +42,11 @@
                 </div>
             </div>
             <div class="w-1/4">
-                @include('layouts.card')
+                <div class="card">
+                    @foreach($project->activities as $activity)
+                        <div>{{$activity->description}} - {{$activity->created_at->diffForHumans()}}</div>
+                    @endforeach
+                </div>
             </div>
         </div>
     </main>
