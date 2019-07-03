@@ -22,12 +22,12 @@ class TasksController extends Controller
     {
         $this->authorize('update', $task->project);
 
-        request()->validate(['text' => 'required']);
+        $task->update(request()->validate(['text' => 'required']));
 
-        $task->update(['text' => request('text')]);
-
-        if(request()->has('completed')){
+        if(request('completed')){
             $task->complete();
+        } else {
+            $task->incomplete();
         }
 
         return redirect($project->path());

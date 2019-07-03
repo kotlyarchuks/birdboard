@@ -53,10 +53,42 @@ class TasksTest extends TestCase
         $this->actingAs($project->owner)
             ->patch($project->tasks->first()->path(), $attributes = [
             'text' => 'New task',
-            'completed' => true
         ]);
 
         $this->assertDatabaseHas('tasks', $attributes);
+    }
+
+    /** @test * */
+    function task_can_be_completed()
+    {
+        $project = ProjectFactory::withTasks(1)->create();
+
+        $this->actingAs($project->owner)
+            ->patch($project->tasks->first()->path(), $attributes = [
+                'text' => 'New text',
+                'completed' => true
+            ]);
+
+        $this->assertTrue($project->tasks->first()->fresh()->completed);
+    }
+
+    /** @test * */
+    function task_can_be_marked_as_uncompleted()
+    {
+        $project = ProjectFactory::withTasks(1)->create();
+
+        $this->actingAs($project->owner)
+            ->patch($project->tasks->first()->path(), $attributes = [
+                'text' => 'New text',
+                'completed' => true
+            ]);
+
+        $this->patch($project->tasks->first()->path(), $attributes = [
+                'text' => 'New text',
+                'completed' => false
+            ]);
+
+        $this->assertFalse($project->tasks->first()->fresh()->completed);
     }
 
     /** @test * */
