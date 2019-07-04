@@ -4,8 +4,8 @@
             @include("projects.activities.{$activity->description}")
             -
             <span class="text-gray-500">
-                                {{$activity->created_at->diffForHumans(null, true)}}
-                            </span>
+                {{$activity->created_at->diffForHumans(null, true)}}
+            </span>
         </div>
     @empty
         <div class="text-sm text-muted">There is no activity yet</div>

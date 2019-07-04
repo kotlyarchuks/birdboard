@@ -31,4 +31,17 @@ class Task extends Model
     {
         $this->update(['completed' => false]);
     }
+
+    public function activities()
+    {
+        return $this->morphMany(Activity::class, 'subject');
+    }
+
+    public function recordActivity($description): void
+    {
+        $this->activities()->create([
+            'description' => $description,
+            'project_id' => $this->project->id
+        ]);
+    }
 }

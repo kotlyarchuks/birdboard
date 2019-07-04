@@ -1,1 +1,1 @@
-You created a task
+<span class="text-gray-700">You created <span class="text-gray-900">"{{$activity->subject->text}}"</span></span>

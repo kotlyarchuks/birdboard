@@ -17,6 +17,7 @@ class CreateActivitiesTable extends Migration
             $table->bigIncrements('id');
             $table->string('description');
             $table->bigInteger('project_id')->unsigned();
+            $table->nullableMorphs('subject');
             $table->timestamps();
 
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');

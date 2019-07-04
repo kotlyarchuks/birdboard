@@ -1,1 +1,1 @@
-You created the project
+<span class="text-gray-700">You created the project</span>

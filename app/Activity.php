@@ -8,4 +8,9 @@ class Activity extends Model
 {
     protected $dates = ['created_at', 'updated_at'];
     protected $guarded = [];
+
+    public function subject()
+    {
+        return $this->morphTo();
+    }
 }
