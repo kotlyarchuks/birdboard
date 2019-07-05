@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
@@ -15,8 +16,9 @@ use Illuminate\Support\Arr;
  */
 class Project extends Model
 {
+    use RecordsActivity;
+
     protected $guarded = [];
-    public $old = [];
 
     public function path()
     {
@@ -41,23 +43,5 @@ class Project extends Model
     public function addTask($text)
     {
         return $this->tasks()->create(['text' => $text]);
-    }
-
-    public function recordActivity($description): void
-    {
-        $this->activities()->create([
-            'description' => $description,
-            'changes' => $this->getProjectChanges($description)
-        ]);
-    }
-
-    public function getProjectChanges($description)
-    {
-        if ($description === 'updated'){
-            return [
-                'before' => Arr::except(array_diff($this->old, $this->getAttributes()), 'updated_at'),
-                'after' => Arr::except($this->getChanges(), 'updated_at')
-            ];
-        }
     }
 }
