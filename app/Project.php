@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 /**
  * App\Project
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
     protected $guarded = [];
+    public $old = [];
 
     public function path()
     {
@@ -43,6 +45,19 @@ class Project extends Model
 
     public function recordActivity($description): void
     {
-        $this->activities()->create(compact('description'));
+        $this->activities()->create([
+            'description' => $description,
+            'changes' => $this->getProjectChanges($description)
+        ]);
+    }
+
+    public function getProjectChanges($description)
+    {
+        if ($description === 'updated'){
+            return [
+                'before' => Arr::except(array_diff($this->old, $this->getAttributes()), 'updated_at'),
+                'after' => Arr::except($this->getChanges(), 'updated_at')
+            ];
+        }
     }
 }

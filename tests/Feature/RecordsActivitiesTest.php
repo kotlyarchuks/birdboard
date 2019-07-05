@@ -25,10 +25,22 @@ class RecordsActivitiesTest extends TestCase
     function updating_project()
     {
         $project = ProjectFactory::create();
+        $originalTitle = $project->title;
         $project->update(['title' => 'changed']);
 
         $this->assertCount(2, $project->activities);
         $this->assertEquals('updated', $project->activities->last()->description);
+
+        $expected = [
+            'before' => [
+                'title' => $originalTitle
+            ],
+            'after' => [
+                'title' => 'changed'
+            ]
+        ];
+
+        $this->assertEquals($expected, $project->activities->last()->changes);
     }
 
     /** @test * */
