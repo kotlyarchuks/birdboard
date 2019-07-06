@@ -1,1 +1,1 @@
-<span class="text-gray-700">You completed <span class="text-gray-900">"{{$activity->subject->text}}"</span></span>
+<span class="text-gray-700">{{$activity->author->name}} completed <span class="text-gray-900">"{{$activity->subject->text}}"</span></span>

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Task;
+use App\User;
 use Facades\Tests\Setup\ProjectFactory;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -91,5 +92,19 @@ class RecordsActivitiesTest extends TestCase
         $project->tasks[0]->delete();
 
         $this->assertCount(3, $project->activities);
+    }
+
+    /** @test * */
+    function every_activity_records_author()
+    {
+        $user = factory(User::class)->create();
+
+        $project = ProjectFactory::ownedBy($user)->create();
+        $activity = $project->activities->last();
+        $this->assertEquals($user->name, $activity->author->name);
+
+        $project->tasks()->create(['text' => 'New task']);
+        $activity = $project->fresh()->activities->last();
+        $this->assertEquals($user->name, $activity->author->name);
     }
 }

@@ -1,1 +1,1 @@
-<span class="text-gray-700">You created the project</span>
+<span class="text-gray-700">{{$activity->author->name}} created the project</span>

@@ -14,4 +14,9 @@ class Activity extends Model
     {
         return $this->morphTo();
     }
+
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'author_id');
+    }
 }
