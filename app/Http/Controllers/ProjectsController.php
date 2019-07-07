@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Project;
+use App\User;
 use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
@@ -11,13 +12,14 @@ class ProjectsController extends Controller
         $attributes = $this->validateData();
 
         $project = auth()->user()->projects()->create($attributes);
+        $project->invite(auth()->user());
 
         return redirect($project->path());
     }
 
     public function index()
     {
-        $projects = auth()->user()->projects()->orderBy('updated_at', 'desc')->get();
+        $projects = auth()->user()->accessibleProjects();
 
         return view('projects.index', compact('projects'));
     }

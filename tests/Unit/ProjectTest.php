@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Task;
 use App\User;
+use Facades\Tests\Setup\ProjectFactory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -43,5 +44,15 @@ class ProjectTest extends TestCase
         $project = factory('App\Project')->create();
         $project->addTask('My new task');
         $this->assertEquals('My new task', $project->tasks()->first()->text);
+    }
+
+    /** @test * */
+    function project_can_invite_users()
+    {
+        $project = ProjectFactory::create();
+
+        $project->invite($newUser = factory(User::class)->create());
+
+        $this->assertTrue($project->members->contains($newUser));
     }
 }

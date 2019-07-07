@@ -24,6 +24,17 @@ class ProjectsTest extends TestCase {
     }
 
     /** @test * */
+    function user_can_view_list_of_all_projects_he_has_been_invited_to()
+    {
+        $project = ProjectFactory::create();
+
+        $project->invite($newUser = factory(User::class)->create());
+        $this->actingAs($newUser)
+            ->get('/projects')
+            ->assertSee($project->title);
+    }
+
+    /** @test * */
     function guests_cannot_view_list_of_projects()
     {
         factory('App\Project', 2)->create();
