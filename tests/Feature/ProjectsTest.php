@@ -114,6 +114,26 @@ class ProjectsTest extends TestCase {
     }
 
     /** @test * */
+    function owner_can_delete_project()
+    {
+        $project = ProjectFactory::create();
+
+        $this->actingAs($project->owner)
+            ->delete($project->path());
+        $this->assertEquals(0, Project::all()->count());
+    }
+
+    /** @test * */
+    function not_owner_cannot_delete_project()
+    {
+        $this->signIn();
+        $project = ProjectFactory::create();
+
+        $this->delete($project->path())
+            ->assertStatus(403);
+    }
+
+    /** @test * */
     function project_requires_a_title()
     {
         $this->signIn();
