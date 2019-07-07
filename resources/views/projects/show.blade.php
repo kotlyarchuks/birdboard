@@ -4,7 +4,13 @@
         <p class="text-gray-700">
             <a href="/projects">My projects</a> / {{$project->title}}
         </p>
-        <a href="{{$project->path()}}/edit" class="button">Edit project</a>
+        <div class="flex items-center">
+            @foreach($project->members as $member)
+                <img src="{{gravatar_url($member->email)}}" alt="" class="rounded-full w-8 mr-2">
+            @endforeach
+                <img src="{{gravatar_url($project->owner->email)}}" alt="" class="rounded-full w-8 mr-2">
+                <a href="{{$project->path()}}/edit" class="button ml-5">Edit project</a>
+        </div>
     </header>
 
     <main>
