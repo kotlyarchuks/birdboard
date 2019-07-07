@@ -119,7 +119,8 @@ class ProjectsTest extends TestCase {
         $project = ProjectFactory::create();
 
         $this->actingAs($project->owner)
-            ->delete($project->path());
+            ->delete($project->path())
+            ->assertRedirect('/projects');
         $this->assertEquals(0, Project::all()->count());
     }
 
