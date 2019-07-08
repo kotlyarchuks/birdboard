@@ -9,7 +9,9 @@
         <form action="{{$project->path()}}" method="post" class="text-right">
             @method('delete')
             @csrf
-            <button type="submit" class="text-sm cursor-pointer hover:text-gray-600">Delete</button>
+            @can('own', $project)
+                <button type="submit" class="text-sm cursor-pointer hover:text-gray-600">Delete</button>
+            @endcan
         </form>
     </div>
 </div>

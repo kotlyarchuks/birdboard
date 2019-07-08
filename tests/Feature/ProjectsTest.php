@@ -35,6 +35,18 @@ class ProjectsTest extends TestCase {
     }
 
     /** @test * */
+    function invited_users_cannot_delete_project()
+    {
+        $project = ProjectFactory::create();
+
+        $project->invite($newUser = factory(User::class)->create());
+
+        $this->actingAs($newUser)
+            ->delete($project->path())
+            ->assertStatus(403);
+    }
+
+    /** @test * */
     function guests_cannot_view_list_of_projects()
     {
         factory('App\Project', 2)->create();
