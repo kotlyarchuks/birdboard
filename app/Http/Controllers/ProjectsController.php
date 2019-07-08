@@ -12,7 +12,6 @@ class ProjectsController extends Controller
         $attributes = $this->validateData();
 
         $project = auth()->user()->projects()->create($attributes);
-        $project->invite(auth()->user());
 
         return redirect($project->path());
     }

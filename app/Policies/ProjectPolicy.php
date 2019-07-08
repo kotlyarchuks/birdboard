@@ -12,6 +12,11 @@ class ProjectPolicy
 
     public function update(User $user, Project $project)
     {
-        return $user->is($project->owner) or $project->members->contains($user);
+        return $this->own($user, $project) or $project->members->contains($user);
+    }
+
+    public function own(User $user, Project $project)
+    {
+        return $user->is($project->owner);
     }
 }
