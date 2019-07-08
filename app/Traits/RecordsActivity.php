@@ -39,7 +39,7 @@ trait RecordsActivity {
             'description' => $description,
             'changes' => $this->getModelChanges(),
             'project_id' => class_basename($this) === 'Project' ? $this->id : $this->project->id,
-            'author_id' => ($this->project ?? $this)->owner->id
+            'author_id' => $this->getOwner()
         ]);
     }
 
@@ -61,5 +61,12 @@ trait RecordsActivity {
     protected function getDescription($event)
     {
         return strtolower(class_basename($this))."_".$event;
+    }
+
+    protected function getOwner(){
+        if (!auth()->check()){
+            return ($this->project ?? $this)->owner->id;
+        }
+        return auth()->user()->id;
     }
 }

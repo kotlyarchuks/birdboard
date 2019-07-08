@@ -48,7 +48,7 @@ class InvitationsTest extends TestCase
 
         $this->actingAs($owner)->post($project->path().'/invitations', [
             'email' => 'notavalid@example.com',
-        ])->assertSessionHasErrors(['email' => 'Email should be valid']);
+        ])->assertSessionHasErrors(['email' => 'Email should be valid'], null, 'invitations');
     }
 
     /** @test * */

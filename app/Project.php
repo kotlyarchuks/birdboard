@@ -62,7 +62,9 @@ class Project extends Model
 
     public function addTask($text)
     {
-        return $this->tasks()->create(['text' => $text]);
+        return $this->tasks()->create([
+            'text' => $text,
+        ]);
     }
 
     public function invite(User $user)
