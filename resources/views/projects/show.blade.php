@@ -43,6 +43,7 @@
                         @method('PATCH')
                         @csrf
                         <textarea class="card w-full mb-4" style="min-height: 200px" placeholder="Your thoughts..." name="notes">{{$project->notes}}</textarea>
+                        @include('layouts.errors')
                         <button type="submit" class="button">Save</button>
                     </form>
                 </div>
@@ -50,6 +51,9 @@
             <div class="w-1/4">
                 @include('layouts.card')
                 @include('projects.activities.activity_card')
+                @can('own', $project)
+                    @include('projects.invite')
+                @endcan
             </div>
         </div>
     </main>
