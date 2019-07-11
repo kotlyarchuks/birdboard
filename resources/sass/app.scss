@@ -14,6 +14,10 @@
 .button {
     @apply .bg-blue-main .text-white .rounded-lg .px-6 .py-3;
     box-shadow: 0 2px 7px 0 #b0eaff;
+
+    &.is-outlined {
+        @apply .bg-white .text-blue-main .border-2 .border-blue-main
+    }
 }
 
 .card {

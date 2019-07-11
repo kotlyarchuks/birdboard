@@ -40,26 +40,42 @@ class Project extends Model
 
     protected static $recordableEvents = ['created', 'updated'];
 
+    /**
+     * @return string
+     */
     public function path()
     {
         return "/projects/{$this->id}";
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function owner()
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function tasks()
     {
         return $this->hasMany(Task::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function activities()
     {
         return $this->hasMany(Activity::class)->latest();
     }
 
+    /**
+     * @param $text
+     * @return Model
+     */
     public function addTask($text)
     {
         return $this->tasks()->create([
@@ -67,11 +83,17 @@ class Project extends Model
         ]);
     }
 
+    /**
+     * @param User $user
+     */
     public function invite(User $user)
     {
-        return $this->members()->attach($user);
+        $this->members()->attach($user);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function members()
     {
         return $this->belongsToMany(User::class, 'project_members');

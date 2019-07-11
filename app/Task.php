@@ -39,22 +39,34 @@ class Task extends Model
 
     protected static $recordableEvents = ['created', 'deleted'];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function project()
     {
         return $this->belongsTo(Project::class);
     }
 
+    /**
+     * @return string
+     */
     public function path()
     {
         return $this->project->path() . '/tasks/' . $this->id;
     }
 
+    /**
+     *
+     */
     public function complete()
     {
         $this->update(['completed' => true]);
         $this->recordActivity('task_completed');
     }
 
+    /**
+     *
+     */
     public function incomplete()
     {
         $this->update(['completed' => false]);
