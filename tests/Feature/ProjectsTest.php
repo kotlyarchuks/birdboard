@@ -90,6 +90,22 @@ class ProjectsTest extends TestCase {
     }
 
     /** @test * */
+    function tasks_can_be_included_in_project_creation()
+    {
+        $this->signIn();
+
+        $attributes = factory(Project::class)->raw();
+        $attributes['tasks'] = [
+            ['text' => 'Task 1'],
+            ['text' => 'Task 2']
+        ];
+
+        $this->post('/projects', $attributes);
+
+        $this->assertCount(2, Project::first()->tasks);
+    }
+
+    /** @test * */
     function user_can_update_project()
     {
         $project = ProjectFactory::create();

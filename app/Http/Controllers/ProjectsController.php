@@ -13,6 +13,14 @@ class ProjectsController extends Controller
 
         $project = auth()->user()->projects()->create($attributes);
 
+        if($request->has('tasks')){
+           $project->tasks()->createMany(request('tasks'));
+        }
+
+        if($request->wantsJson()){
+            return response()->json(['path' => $project->path()]);
+        }
+
         return redirect($project->path());
     }
 
